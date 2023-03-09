@@ -29,10 +29,11 @@ describe Application do
   context "GETS /albums" do
     it 'returns 200 OK and all albums' do 
       response = get('/albums')
-      expected_response = 'Doolittle, Surfer Rosa, Waterloo, Super Trouper, Bossanova, Lover, Folklore, I Put a Spell on You, Baltimore, Here Comes the Sun, Fodder on My Wings, Ring Ring'
+    #  expected_response = 'Doolittle, Surfer Rosa, Waterloo, Super Trouper, Bossanova, Lover, Folklore, I Put a Spell on You, Baltimore, Here Comes the Sun, Fodder on My Wings, Ring Ring'
 
       expect(response.status).to eq(200)
-      expect(response.body).to eq(expected_response)
+      expect(response.body).to include('<a href="/albums/1">Doolittle</a>')
+      expect(response.body).to include('<a href="/albums/2">Surfer Rosa</a>')      
     end
   end
 
@@ -51,11 +52,21 @@ describe Application do
   context "GET /artists" do 
     it "returns response 200 ok and a list of artists" do 
       response = get('/artists')
-      expected_response = "Pixies, ABBA, Taylor Swift, Nina Simone"
-      expect(response.body).to eq(expected_response)
+      expect(response.body).to include ('<a href="/artist/1">Pixies</a>')
+      expect(response.body).to include ('<a href="/artist/2">ABBA</a>')
+
       expect(response.status).to eq(200)
     end
   end
+
+  context "GET /artists/:id" do 
+    it "returns response 200 ok and a single artist" do 
+      response = get('/artists/1')
+      expect(response.status).to eq(200)
+      expect(response.body).to include("Pixies")
+      expect(response.body).to include("Rock")
+    end 
+  end 
 
   context "POST /artists" do 
     it "returns 200 ok and creates a new artist" do
@@ -66,5 +77,15 @@ describe Application do
       result = get('/artists')
       expect(result.body).to include("Wild nothing")
     end 
+  end 
+
+  context "GET /albums/:id" do 
+    it "return the first album" do 
+      response = get('/albums/1')
+      expect(response.body).to include("Doolittle")
+      expect(response.body).to include("Pixies")
+      expect(response.body).to include("1989")
+      expect(response.status).to eq(200)
+    end
   end 
 end
