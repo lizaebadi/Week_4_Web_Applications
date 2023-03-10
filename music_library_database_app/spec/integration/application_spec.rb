@@ -29,7 +29,6 @@ describe Application do
   context "GETS /albums" do
     it 'returns 200 OK and all albums' do 
       response = get('/albums')
-    #  expected_response = 'Doolittle, Surfer Rosa, Waterloo, Super Trouper, Bossanova, Lover, Folklore, I Put a Spell on You, Baltimore, Here Comes the Sun, Fodder on My Wings, Ring Ring'
 
       expect(response.status).to eq(200)
       expect(response.body).to include('<a href="/albums/1">Doolittle</a>')
@@ -37,10 +36,35 @@ describe Application do
     end
   end
 
+  context "GET /albums/new" do 
+    it "returns a new album form" do 
+      response = get('/albums/new')
+      expect(response.status).to eq(200)
+      expect(response.body).to include('<form action="/albums" method="POST">')
+      expect(response.body).to include('<input type="text" name="title">')
+      expect(response.body).to include('<input type="text" name="release_year">')
+      expect(response.body).to include('<input type="text" name="artist_id">')
+    end 
+  end 
+
+  context "GET /albums/:id" do 
+    it "return the first album" do 
+      response = get('/albums/1')
+      expect(response.body).to include("Doolittle")
+      expect(response.body).to include("Pixies")
+      expect(response.body).to include("1989")
+      expect(response.status).to eq(200)
+    end
+  end 
+
   context "POST /albums" do
-    it 'returns 200 OK' do
-      # When creating a new album.
-      response = post('/albums', title: 'Voyage', release_year: '2022', artist_id: '2')
+    it 'returns 200 OK when creating a new album' do
+      response = post(
+        '/albums', 
+        title: 'Voyage', 
+        release_year: '2022', 
+        artist_id: '2'
+      )
       expect(response.status).to eq(200)
       expect(response.body).to eq('')
 
@@ -49,6 +73,10 @@ describe Application do
     end
   end 
   
+
+# ARTISTS
+
+
   context "GET /artists" do 
     it "returns response 200 ok and a list of artists" do 
       response = get('/artists')
@@ -57,6 +85,16 @@ describe Application do
 
       expect(response.status).to eq(200)
     end
+  end
+
+  context "GET /artists/new" do 
+    it "returns a form to add a new artist" do 
+      response = get('/artists/new')
+      expect(response.status).to eq(200)
+      expect(response.body).to include('<form action="/artists" method="POST">')
+      expect(response.body).to include('<input type="text" name="name">')
+      expect(response.body).to include('<input type="text" name="genre">')
+    end 
   end
 
   context "GET /artists/:id" do 
@@ -70,7 +108,11 @@ describe Application do
 
   context "POST /artists" do 
     it "returns 200 ok and creates a new artist" do
-      response = post('/artists', name: "Wild nothing", genre: "Indie")
+      response = post(
+        '/artists', 
+        name: "Wild nothing", 
+        genre: "Indie"
+      )
       expect(response.status).to eq(200)
       expect(response.body).to eq('')
 
@@ -79,13 +121,4 @@ describe Application do
     end 
   end 
 
-  context "GET /albums/:id" do 
-    it "return the first album" do 
-      response = get('/albums/1')
-      expect(response.body).to include("Doolittle")
-      expect(response.body).to include("Pixies")
-      expect(response.body).to include("1989")
-      expect(response.status).to eq(200)
-    end
-  end 
 end
