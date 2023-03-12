@@ -11,6 +11,9 @@ GEM
       rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
+    rackup (1.0.0)
+      rack (< 3)
+      webrick
     rspec (3.11.0)
       rspec-core (~> 3.11.0)
       rspec-expectations (~> 3.11.0)
@@ -40,15 +43,19 @@ GEM
     webrick (1.7.0)
 
 PLATFORMS
+  arm64-darwin-22
+  x68_64-linux
   x86_64-darwin-20
+  x86_64-linux
 
 DEPENDENCIES
   pg (~> 1.3)
   rack-test (~> 1.1)
+  rackup (~> 1.0)
   rspec (~> 3.11)
   sinatra (~> 2.2)
   sinatra-contrib (~> 2.2)
   webrick (~> 1.7)
 
 BUNDLED WITH
-   2.2.15
+   2.4.7

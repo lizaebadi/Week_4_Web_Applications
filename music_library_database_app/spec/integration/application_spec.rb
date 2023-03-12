@@ -74,9 +74,6 @@ describe Application do
   end 
   
 
-# ARTISTS
-
-
   context "GET /artists" do 
     it "returns response 200 ok and a list of artists" do 
       response = get('/artists')
@@ -103,7 +100,7 @@ describe Application do
       expect(response.status).to eq(200)
       expect(response.body).to include("Pixies")
       expect(response.body).to include("Rock")
-    end 
+    end  
   end 
 
   context "POST /artists" do 
